@@ -18,7 +18,7 @@ export default function SignUp() {
     }
 
     fetch(
-      "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyDh86gDOATmnQKrj5jnVFM7Ck9PbeaR0W0",
+      "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyCYMZYwjtx0zseM0wqskqawugDyPheBYw4",
       {
         method: "POST",
         body: JSON.stringify({
@@ -36,7 +36,6 @@ export default function SignUp() {
         return res.json();
       } else {
         res.json().then((data) => {
-          console.log("User has successfully signed up.")
           let errorMessage = "Authentication failed";
           if (data && data.error && data.error.message) {
             errorMessage = data.error.message;
