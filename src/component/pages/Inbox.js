@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
-import { sentboxAction } from '../store/SentSlicer'
 import { useSelector } from 'react-redux'
+import { inboxAction } from '../store/InboxSlicer';
 
-function Sentbox() {
-    const emaildata = useSelector(state=>state.sent.sentbox);
+const Inbox = () => {
+    const emaildata = useSelector(state=>state.in.inbox);
     const dispatch = useDispatch();
     const submitHandler  = () => {
-        fetch(`https://mail-box-client-d7cd4-default-rtdb.firebaseio.com/emailData/${localStorage.getItem("email")}/Sent.json`).then((res)=>{
+        fetch(`https://mail-box-client-d7cd4-default-rtdb.firebaseio.com/emailData/${localStorage.getItem("email")}/Recieve.json`).then((res)=>{
             if(res.ok){
                 return res.json()
             }else{
@@ -32,7 +32,7 @@ function Sentbox() {
             
             console.log(data)
             //console.log(myarr)
-            dispatch(sentboxAction.setsenbox(myarr))
+            dispatch(inboxAction.setinbox(myarr))
     
             
         }).catch((err)=>{
@@ -55,9 +55,9 @@ function Sentbox() {
             <hr/>
         </div>
     ))}
-    </div>
+    </div> 
     
   )
 }
 
-export default Sentbox
+export default Inbox

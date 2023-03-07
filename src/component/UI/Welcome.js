@@ -2,12 +2,16 @@ import React from 'react'
 import EmailForm from '../pages/EmailForm'
 
 
-const Welcome = () => {
+function Welcome() {
   return (
-    <div>
-      <p>Welcome to your mail box</p>
-      <EmailForm/>
+   <div>
+     <div>
+      <h4>Welcome to mail box client</h4>
     </div>
+    <hr/>
+    <EmailForm/>
+   </div>
+    
   )
 }
 
