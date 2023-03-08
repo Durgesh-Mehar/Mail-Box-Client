@@ -22,7 +22,7 @@ function Sentbox() {
             const myarr = []
     
             for(let i in data){
-                myarr.push({
+                myarr.unshift({
                     id:i,
                     email:data[i].email,
                     subject:data[i].subject,
