@@ -9,7 +9,7 @@ import Welcome from './component/UI/Welcome';
 
 function App() {
   return (
-    <div>
+    <div style={{backgroundColor:'yellowgreen'}}>
       <Header/>
      <Routes>
         <Route path='/' element={<LogIn/>}/>

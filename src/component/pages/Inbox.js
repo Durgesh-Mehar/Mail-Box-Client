@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react'
+import { Button } from 'react-bootstrap';
 import { useDispatch } from 'react-redux'
 import { useSelector } from 'react-redux'
 import { inboxAction } from '../store/InboxSlicer';
@@ -6,7 +7,7 @@ import { inboxAction } from '../store/InboxSlicer';
 const Inbox = () => {
     const emaildata = useSelector(state=>state.in.inbox);
     const dispatch = useDispatch();
-    const submitHandler  = () => {
+    const getSaveData  = () => {
         fetch(`https://mail-box-client-d7cd4-default-rtdb.firebaseio.com/emailData/${localStorage.getItem("email")}/Recieve.json`).then((res)=>{
             if(res.ok){
                 return res.json()
@@ -41,18 +42,45 @@ const Inbox = () => {
     }
 
     useEffect(()=>{
-        submitHandler();
+        getSaveData();
     },[]);
+
+    
+  const deleteHandler = (id) => {
+    fetch(
+      `https://mail-box-client-d7cd4-default-rtdb.firebaseio.com/emailData/${localStorage.getItem("email")}/Recieve/${id}.json`,
+      {
+        method: "DELETE",
+      }
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        // console.log(data);
+        getSaveData();
+        console.log("Expense successfuly deleted");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+//let Email = localStorage.getItem('userEmail')
+
+//console.log(Email)
    
   return (
     
       <div>
-    {emaildata.map((item,index)=>(
-        <div key={index}>
-            <p>Email:  {item.email}</p>
-            <p>Subject: {item.subject}</p>
-            <p>Message: {item.message}</p>
+      {emaildata.map((item,id)=>(
+        <div key={id} style={{backgroundColor:'yellow' ,margin:'3%'}}>
+            <p>
+            From:  {item.email}{'   '}
+            𝖘𝖚𝖇𝖏𝖊𝖈𝖙:  {item.subject}{'   '}
+            𝖒𝖊𝖘𝖘𝖆𝖌𝖊:  {item.message}{'    '}
+            <Button variant="danger" style={{float:'right'}} onClick={()=> deleteHandler(item.id)}>Delete</Button>
+            </p>
             <hr/>
+            
         </div>
     ))}
     </div> 

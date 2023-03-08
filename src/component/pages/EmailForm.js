@@ -2,13 +2,11 @@ import React, { useRef, useState } from 'react';
 import { Form, Button } from 'react-bootstrap';
 
 
-
-
 const EmailForm = () => {
   const emailinputref = useRef()
   const messageinputref = useRef()
   const subjectinputref = useRef()
-
+  
   
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -18,11 +16,11 @@ const EmailForm = () => {
    const entersubject = subjectinputref.current.value
    const replacedmail = enteredemail.replace('@','').replace('.','')
    localStorage.setItem('replacedmail',replacedmail)
-
+   console.log(replacedmail)
+   
    const emaildata = {email: enteredemail, message:enteredmessage, subject:entersubject}
-
-
-
+  
+  
   fetch(`https://mail-box-client-d7cd4-default-rtdb.firebaseio.com/emailData/${localStorage.getItem('email')}/Sent.json`,{
     method:'POST',
     body:JSON.stringify(
@@ -43,7 +41,9 @@ const EmailForm = () => {
                throw new Error(errormessage)
             }
         }).then((data)=>{
-            
+          //  emailinputref.current.value = '';
+          //  messageinputref.current.value = '';
+          //  subjectinputref.current.value = '';
 
         }).catch((error)=>{
             alert(error.message)
@@ -71,7 +71,9 @@ const EmailForm = () => {
                throw new Error(errormessage)
             }
         }).then((data)=>{
-
+          // emailinputref.current.value = '';
+          // messageinputref.current.value = '';
+          // subjectinputref.current.value = '';
         }).catch((error)=>{
             alert(error.message)
         })

@@ -5,8 +5,8 @@ import EmailForm from '../pages/EmailForm'
 function Welcome() {
   return (
    <div>
-     <div>
-      <h4>Welcome to mail box client</h4>
+     <div style={{textAlign:'center', fontSize:'200%'}}>
+      <p>Welcome to mail box client</p>
     </div>
     <hr/>
     <EmailForm/>
