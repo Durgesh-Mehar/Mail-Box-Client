@@ -1,11 +1,13 @@
 import React, { useEffect } from 'react'
 import { Button } from 'react-bootstrap';
-import { useDispatch } from 'react-redux'
-import { useSelector } from 'react-redux'
+import { useDispatch,useSelector } from 'react-redux'
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { inboxAction } from '../store/InboxSlicer';
 
 const Inbox = () => {
-    const emaildata = useSelector(state=>state.in.inbox);
+const history = useNavigate();
+  const emaildata = useSelector(state=>state.in.inbox);
+    
     const dispatch = useDispatch();
     const getSaveData  = () => {
         fetch(`https://mail-box-client-d7cd4-default-rtdb.firebaseio.com/emailData/${localStorage.getItem("email")}/Recieve.json`).then((res)=>{
@@ -27,11 +29,12 @@ const Inbox = () => {
                     id:i,
                     email:data[i].email,
                     subject:data[i].subject,
-                    message:data[i].message
+                    message:data[i].message,
+                    show:data[i].show
                 })
             }
             
-            //console.log(data)
+            //console.log(data) 
             //console.log(myarr)
             dispatch(inboxAction.setinbox(myarr))
     
@@ -43,7 +46,7 @@ const Inbox = () => {
     useEffect(() => {
       const intervalId = setInterval(() => {
         getSaveData();
-      }, 1000);
+      }, 4000);
     console.log("Hellow World")
       return () => {
         clearInterval(intervalId);
@@ -68,27 +71,50 @@ const Inbox = () => {
       });
   };
 
-//let Email = localStorage.getItem('userEmail')
+  const showHandler = (id) => {
+      fetch( `https://mail-box-client-d7cd4-default-rtdb.firebaseio.com/emailData/${localStorage.getItem("email")}/Recieve/${id}.json`,{
+          method:"PATCH",
+          body:JSON.stringify({
+              show:false
+          }),
+          
+          headers:{
+            'Content-Type':'application/json'
+          }
+        }).then((res)=>{
+          if(res.ok){
+              
+              return res.json();
+          }else{
+              return res.json().then((data)=>{
+                  if(data && data.error && data.error.message){
+                      let errMessage = "Authentication Failed, " + data.error.message;
+                      throw new Error(errMessage);
+                  }
+              })
+          }
+      }).then((data)=>{
+          getSaveData();
+            history(`/inbox/${id}`)
+      }).catch((err)=>{
+        alert(err.message);
+      })
+  };
 
-//console.log(Email)
-   
   return (
     
       <div>
       {emaildata.map((item,id)=>(
-        <div key={id} style={{backgroundColor:'yellow' ,margin:'3%'}}>
-            <p>
-            From:  {item.email}{'   '}
-            𝖘𝖚𝖇𝖏𝖊𝖈𝖙:  {item.subject}{'   '}
-            𝖒𝖊𝖘𝖘𝖆𝖌𝖊:  {item.message}{'    '}
-            <Button variant="danger" style={{float:'right'}} onClick={()=> deleteHandler(item.id)}>Delete</Button>
+        <div key={id} style={{backgroundColor:'yellow' ,margin:'3%'}} >
+           <Button variant="danger" style={{float:'right'}} onClick={()=> deleteHandler(item.id)}>Delete</Button>
+            <p onClick={()=> showHandler(item.id)}>
+            {item.show && <p>🔵</p>}
+           <Link>𝕱𝖗𝖔𝖒: {item.email}</Link>
             </p>
-            <hr/>
-            
+            <hr/>  
         </div>
     ))}
-    </div> 
-    
+    </div>   
   )
 }
 

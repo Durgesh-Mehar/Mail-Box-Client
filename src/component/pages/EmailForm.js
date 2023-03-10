@@ -19,7 +19,7 @@ const EmailForm = () => {
    localStorage.setItem('replacedmail',replacedmail)
    console.log(replacedmail)
    
-   const emaildata = {email: enteredemail, message:enteredmessage, subject:entersubject}
+   const emaildata = {email: localStorage.getItem("userEmail"), message:enteredmessage, subject:entersubject, show:true}
   
   
   fetch(`https://mail-box-client-d7cd4-default-rtdb.firebaseio.com/emailData/${localStorage.getItem('email')}/Sent.json`,{
